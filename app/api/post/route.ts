@@ -4,6 +4,22 @@ import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import slugify from "slugify";
 
+export async function GET(request: Request, response: Response) {
+  const { searchParams } = new URL(request.url);
+  const username = searchParams.get("user")!;
+  const slug = searchParams.get("slug")!;
+  const prisma = new PrismaClient();
+
+  const post = await prisma.post.findFirst({
+    where: {
+      user: {
+        username,
+      },
+      slug,
+    },
+  });
+  return NextResponse.json({ post });
+}
 export async function POST(request: Request, response: Response) {
   const session = await getServerSession(OPTIONS);
 

@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface User {
@@ -42,8 +43,10 @@ export default function ViewUser({ params }: { params: { slug: string } }) {
               <p className="font-bold text-4xl">Stories</p>
               {user.posts.map((post) => (
                 <div key={post.id} className="flex flex-col">
-                  <p className="font-bold text-xl">{post.title}</p>
-                  <p className="text-lg">{truncate(post.content)}</p>
+                  <Link href={`/user/${user.username}/${post.slug}`}>
+                    <p className="font-bold text-xl">{post.title}</p>
+                    <p className="text-lg">{truncate(post.content)}</p>
+                  </Link>
                 </div>
               ))}
             </div>

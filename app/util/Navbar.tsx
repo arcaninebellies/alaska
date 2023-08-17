@@ -4,6 +4,7 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
 
 interface User {
@@ -28,6 +29,12 @@ export default function Navbar() {
       {user && (
         <>
           <div className="fixed flex flex-row bg-slate-100 shadow text-black w-full p-4 justify-end sticky">
+            <Link href="/user/settings">
+              <div className="flex flex-row justify-center items-center content-center mr-4">
+                <Cog8ToothIcon className="h-4 w-4 mr-1" />
+                <p className="text-lg">Settings</p>
+              </div>
+            </Link>
             <Link href="/post/new">
               <div className="flex flex-row justify-center items-center content-center mr-4">
                 <PencilSquareIcon className="h-4 w-4 mr-1" />
