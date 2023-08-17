@@ -28,6 +28,7 @@ model Post {
   userId    Int
   content   String
   title     String
+  slug String @default("")
   comments  Comment[]
   draft Boolean
 }

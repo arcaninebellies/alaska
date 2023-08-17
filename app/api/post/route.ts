@@ -2,6 +2,7 @@ import { getServerSession } from "next-auth";
 import { OPTIONS } from "../auth/[...nextauth]/route";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
+import slugify from "slugify";
 
 export async function POST(request: Request, response: Response) {
   const session = await getServerSession(OPTIONS);
@@ -29,6 +30,7 @@ export async function POST(request: Request, response: Response) {
           title: data.title,
           content: data.content,
           draft: data.draft,
+          slug: slugify(data.title),
         },
       });
       return NextResponse.json({ post });
