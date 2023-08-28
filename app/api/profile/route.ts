@@ -14,7 +14,7 @@ export async function GET(request: Request, response: Response) {
           draft: false,
         },
         orderBy: {
-          createdAt: "asc",
+          updatedAt: "desc",
         },
       },
     },

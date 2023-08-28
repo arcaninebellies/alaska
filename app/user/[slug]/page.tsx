@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useSession } from "next-auth/react";
 interface User {
   id: number;
   username: string;
@@ -38,14 +37,14 @@ export default async function ViewUser({
   return (
     <>
       {user && (
-        <div className="flex flex-col p-4 bg-slate-100 w-full text-black">
+        <div className="flex flex-col p-4 bg-slate-100 w-full min-h-screen text-black">
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-2"></div>
             <div className="col-span-5 flex flex-col content-start justify-start  divide-y h-full">
               <p className="font-bold text-4xl">Stories</p>
               {user.posts.map((post) => (
                 <div key={post.id} className="flex flex-col">
-                  <Link href={`/user/${user.username}/${post.slug}`}>
+                  <Link href={`/user/${user.username}/${post.id}/${post.slug}`}>
                     <p className="font-bold text-xl">{post.title}</p>
                     <p className="text-lg">{truncate(post.content)}</p>
                   </Link>

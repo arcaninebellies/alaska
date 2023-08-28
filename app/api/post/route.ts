@@ -8,6 +8,8 @@ export async function GET(request: Request, response: Response) {
   const { searchParams } = new URL(request.url);
   const username = searchParams.get("user")!;
   const slug = searchParams.get("slug")!;
+  const id = parseInt(searchParams.get("id")!);
+
   const prisma = new PrismaClient();
   const post = await prisma.post.findFirst({
     where: {
@@ -15,12 +17,18 @@ export async function GET(request: Request, response: Response) {
         username,
       },
       slug,
+      id,
     },
     include: {
       user: {
         select: {
           email: true,
           username: true,
+        },
+      },
+      comments: {
+        include: {
+          user: true,
         },
       },
     },
