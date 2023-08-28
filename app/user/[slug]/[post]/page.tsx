@@ -1,11 +1,26 @@
-import { useEffect, useState } from "react";
+"use client";
 
+import { OPTIONS } from "@/app/api/auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { headers } from "next/headers";
+import { useRouter } from "next/navigation";
 interface User {
   id: number;
   username: string;
   avatar: string;
   description: string;
   posts: Post[];
+  email: string;
 }
 
 interface Post {
@@ -16,26 +31,74 @@ interface Post {
   content: string;
   slug: string;
 }
-async function getData(slug, post) {
-  const res = await fetch(
-    `${process.env.NEXT_URL}/api/post?user=${slug}&slug=${post}`,
-  );
-  const data = await res.json();
-  return data.post;
-}
-export default async function ViewPost({
+
+export default function ViewPost({
   params,
 }: {
   params: { slug: string; post: string };
 }) {
-  const post = await getData(params.slug, params.post);
+  const [post, setPost] = useState<Post>(null!);
+  const [open, setOpen] = useState<boolean>(false);
+  const { data: session } = useSession();
+  const router = useRouter();
 
+  useEffect(() => {
+    fetch(`/api/post?user=${params.slug}&slug=${params.post}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setPost(data.post);
+      });
+  }, [params.slug, params.post]);
+  const deletePost = () => {
+    fetch(`/api/post/edit`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id: post.id }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success) {
+          router.push(`/user/${post.user.username}`);
+        }
+      });
+  };
   return (
     <>
       {post && (
         <>
           <div className="flex flex-col p-4 items-center justify-start content-start bg-slate-100 min-h-screen w-full text-black">
             <p className="text-4xl font-bold">{post.title}</p>
+            {session && session.user.email === post.user.email && (
+              <div className="flex flex-row">
+                <button className="bg-emerald-400/75 rounded-lg px-4 text-slate-100 hover:bg-emerald-400 mr-1">
+                  Edit
+                </button>
+                <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+                  <DialogTrigger asChild>
+                    <button className="bg-rose-400/75 rounded-lg px-4 text-slate-100 hover:bg-rose-400 ml-1">
+                      Delete
+                    </button>
+                  </DialogTrigger>
+                  <DialogContent className="border-2 border-rose-400">
+                    Are you sure you want to delete this?
+                    <button
+                      onClick={() => deletePost()}
+                      className="bg-rose-400/75 rounded-lg px-4 text-slate-100 hover:bg-rose-400 ml-1"
+                    >
+                      Yes
+                    </button>
+                    <button
+                      onClick={() => setOpen(false)}
+                      className="bg-emerald-400/75 rounded-lg px-4 text-slate-100 hover:bg-emerald-400 ml-1"
+                    >
+                      No
+                    </button>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            )}
             <p className="text-lg">{post.content}</p>
           </div>
         </>

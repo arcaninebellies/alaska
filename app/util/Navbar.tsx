@@ -27,39 +27,37 @@ export default function Navbar() {
   return (
     <>
       {user && (
-        <>
-          <div className="fixed flex flex-row bg-slate-100 shadow text-black w-full p-4 justify-end sticky">
-            <Link href="/user/settings">
-              <div className="flex flex-row justify-center items-center content-center mr-4">
-                <Cog8ToothIcon className="h-4 w-4 mr-1" />
-                <p className="text-lg">Settings</p>
-              </div>
-            </Link>
-            <Link href="/post/new">
-              <div className="flex flex-row justify-center items-center content-center mr-4">
-                <PencilSquareIcon className="h-4 w-4 mr-1" />
-                <p className="text-lg">Write</p>
-              </div>
-            </Link>
-            <Link href="/user/drafts">
-              <div className="flex flex-row justify-center items-center content-center mr-4">
-                <PencilSquareIcon className="h-4 w-4 mr-1" />
-                <p className="text-lg">Drafts</p>
-              </div>
-            </Link>
-            <Link href={`/user/${user.username}`}>
-              <div className="flex flex-row justify-center items-center">
-                <Image
-                  src={`/avatars/${user.avatar}`}
-                  alt={user.username}
-                  height={30}
-                  width={30}
-                  className="rounded-full"
-                />
-              </div>
-            </Link>
-          </div>
-        </>
+        <div className=" flex flex-row bg-slate-100 shadow text-black p-4 justify-end w-full sticky top-0">
+          <Link href="/user/settings">
+            <div className="flex flex-row justify-center items-center content-center mr-4">
+              <Cog8ToothIcon className="h-4 w-4 mr-1" />
+              <p className="text-lg">Settings</p>
+            </div>
+          </Link>
+          <Link href="/post/new">
+            <div className="flex flex-row justify-center items-center content-center mr-4">
+              <PencilSquareIcon className="h-4 w-4 mr-1" />
+              <p className="text-lg">Write</p>
+            </div>
+          </Link>
+          <Link href="/user/stories">
+            <div className="flex flex-row justify-center items-center content-center mr-4">
+              <PencilSquareIcon className="h-4 w-4 mr-1" />
+              <p className="text-lg">Stories</p>
+            </div>
+          </Link>
+          <Link href={`/user/${user.username}`}>
+            <div className="flex flex-row justify-center items-center">
+              <Image
+                src={`/avatars/${user.avatar}`}
+                alt={user.username}
+                height={30}
+                width={30}
+                className="rounded-full"
+              />
+            </div>
+          </Link>
+        </div>
       )}
     </>
   );

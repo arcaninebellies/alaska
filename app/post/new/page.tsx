@@ -2,9 +2,11 @@
 
 import { useSession } from "next-auth/react";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function NewPost() {
   const { data: session } = useSession();
+  const router = useRouter();
   const [data, setData] = useState({
     title: "",
     content: "",
@@ -23,6 +25,7 @@ export default function NewPost() {
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
+        router.push(`/user/${data.post.user.username}`);
       });
   };
 

@@ -16,6 +16,14 @@ export async function GET(request: Request, response: Response) {
       },
       slug,
     },
+    include: {
+      user: {
+        select: {
+          email: true,
+          username: true,
+        },
+      },
+    },
   });
   return NextResponse.json({ post });
 }
@@ -46,6 +54,9 @@ export async function POST(request: Request, response: Response) {
           content: data.content,
           draft: data.draft,
           slug: slugify(data.title),
+        },
+        include: {
+          user: true,
         },
       });
       return NextResponse.json({ post });
