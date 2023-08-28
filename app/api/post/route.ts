@@ -9,7 +9,6 @@ export async function GET(request: Request, response: Response) {
   const username = searchParams.get("user")!;
   const slug = searchParams.get("slug")!;
   const prisma = new PrismaClient();
-
   const post = await prisma.post.findFirst({
     where: {
       user: {

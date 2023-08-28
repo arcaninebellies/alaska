@@ -41,6 +41,12 @@ export default function Navbar() {
                 <p className="text-lg">Write</p>
               </div>
             </Link>
+            <Link href="/user/drafts">
+              <div className="flex flex-row justify-center items-center content-center mr-4">
+                <PencilSquareIcon className="h-4 w-4 mr-1" />
+                <p className="text-lg">Drafts</p>
+              </div>
+            </Link>
             <Link href={`/user/${user.username}`}>
               <div className="flex flex-row justify-center items-center">
                 <Image

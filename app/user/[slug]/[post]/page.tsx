@@ -1,5 +1,3 @@
-"use client";
-
 import { useEffect, useState } from "react";
 
 interface User {
@@ -18,19 +16,19 @@ interface Post {
   content: string;
   slug: string;
 }
-
-export default function ViewPost({
+async function getData(slug, post) {
+  const res = await fetch(
+    `${process.env.NEXT_URL}/api/post?user=${slug}&slug=${post}`,
+  );
+  const data = await res.json();
+  return data.post;
+}
+export default async function ViewPost({
   params,
 }: {
   params: { slug: string; post: string };
 }) {
-  const [post, setPost] = useState<Post>(null!);
-
-  useEffect(() => {
-    fetch(`/api/post?user=${params.slug}&slug=${params.post}`)
-      .then((res) => res.json())
-      .then((data) => setPost(data.post));
-  }, []);
+  const post = await getData(params.slug, params.post);
 
   return (
     <>

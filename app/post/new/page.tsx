@@ -11,12 +11,8 @@ export default function NewPost() {
     draft: false,
   });
 
-  const submit = (saveAsDraft: boolean) => {
-    if (saveAsDraft) {
-      setData({ ...data, draft: true });
-    } else {
-      setData({ ...data, draft: false });
-    }
+  const submit = (draft: boolean) => {
+    setData({ ...data, draft: draft });
     fetch("/api/post/", {
       method: "POST",
       headers: {

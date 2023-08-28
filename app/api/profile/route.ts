@@ -11,7 +11,11 @@ export async function GET(request: Request, response: Response) {
   const user = await prisma.user.findFirst({
     where: { username },
     include: {
-      posts: true,
+      posts: {
+        where: {
+          draft: false,
+        },
+      },
     },
   });
   return NextResponse.json({ user });

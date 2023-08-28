@@ -1,8 +1,5 @@
-"use client";
-
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 interface User {
   id: number;
@@ -20,14 +17,17 @@ interface Post {
   slug: string;
 }
 
-export default function ViewUser({ params }: { params: { slug: string } }) {
-  const [user, setUser] = useState<User>(null!);
-
-  useEffect(() => {
-    fetch(`/api/profile?user=${params.slug}`)
-      .then((res) => res.json())
-      .then((data) => setUser(data.user));
-  }, [params.slug]);
+async function getData(slug: string) {
+  const res = await fetch(`${process.env.NEXT_URL}/api/profile?user=${slug}`);
+  const data = await res.json();
+  return data.user;
+}
+export default async function ViewUser({
+  params,
+}: {
+  params: { slug: string };
+}) {
+  const user = await getData(params.slug);
 
   const truncate = (str: string): string => {
     return str.length > 100 ? str.slice(0, 97) + "..." : str;
