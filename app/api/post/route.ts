@@ -3,6 +3,7 @@ import { OPTIONS } from "../auth/[...nextauth]/route";
 import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import slugify from "slugify";
+import prisma from "@/prisma";
 
 export async function GET(request: Request, response: Response) {
   const { searchParams } = new URL(request.url);
@@ -10,7 +11,6 @@ export async function GET(request: Request, response: Response) {
   const slug = searchParams.get("slug")!;
   const id = parseInt(searchParams.get("id")!);
 
-  const prisma = new PrismaClient();
   const post = await prisma.post.findFirst({
     where: {
       user: {
@@ -39,7 +39,6 @@ export async function POST(request: Request, response: Response) {
   const session = await getServerSession(OPTIONS);
 
   if (session?.user?.email) {
-    const prisma = new PrismaClient();
     const email = session.user.email;
     const data = await request.json();
 
