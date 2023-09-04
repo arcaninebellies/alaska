@@ -50,6 +50,7 @@ export async function POST(request: Request, response: Response) {
     });
 
     if (user) {
+      console.log(data);
       const post = await prisma.post.create({
         data: {
           user: {

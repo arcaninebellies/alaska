@@ -10,17 +10,15 @@ export default function NewPost() {
   const [data, setData] = useState({
     title: "",
     content: "",
-    draft: false,
   });
 
   const submit = (draft: boolean) => {
-    setData({ ...data, draft: draft });
     fetch("/api/post/", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify(data),
+      body: JSON.stringify({ ...data, draft }),
     })
       .then((res) => res.json())
       .then((data) => {

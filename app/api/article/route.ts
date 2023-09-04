@@ -12,7 +12,11 @@ export async function GET(request: Request, response: Response) {
     const user = await prisma.user.findFirst({
       where: { email },
       include: {
-        posts: true,
+        posts: {
+          orderBy: {
+            createdAt: "desc",
+          },
+        },
       },
     });
     return NextResponse.json({ user });

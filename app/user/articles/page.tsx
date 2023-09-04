@@ -1,20 +1,21 @@
 import { headers } from "next/headers";
 import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
 
 async function getData() {
-  const res = await fetch(`${process.env.NEXT_URL}/api/stories/`, {
+  const res = await fetch(`${process.env.NEXT_URL}/api/article/`, {
     method: "GET",
     headers: headers(),
   });
   return res.json();
 }
 
-export default async function Drafts() {
+export default async function Articles() {
   const data = await getData();
   const user = data.user;
-  console.log(data.user);
-
+  dayjs.extend(customParseFormat);
   const truncate = (str: string): string => {
     return str.length > 100 ? str.slice(0, 97) + "..." : str;
   };
@@ -22,11 +23,12 @@ export default async function Drafts() {
   return (
     <>
       {user && (
-        <div className="flex flex-col bg-slate-100 min-h-screen w-full text-black p-24">
+        <div className="flex flex-col bg-slate-100 min-h-screen w-full text-black p-24 items-center">
+          <p className="text-4xl font-bold">Articles</p>
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-2"></div>
-            <div className="col-span-5 flex flex-col justify-items-start content-start justify-start  divide-y">
-              <Tabs defaultValue="stories" className="w-[1000px]">
+            <div className="col-span-8 flex flex-col justify-items-start content-start justify-start  divide-y">
+              <Tabs defaultValue="stories" className="w-full">
                 <TabsList>
                   <TabsTrigger value="stories" className="w-[400px]">
                     Stories
@@ -43,7 +45,14 @@ export default async function Drafts() {
                         <Link
                           href={`/user/${user.username}/${post.id}/${post.slug}`}
                         >
-                          <p className="font-bold text-xl">{post.title}</p>
+                          <div className="flex flex-row justify-between items-center">
+                            <p className="font-bold text-xl">{post.title}</p>
+                            <p className="text-sm text-slate-400">
+                              Published{" "}
+                              {dayjs(post.createdAt).format("YYYY-MM-DD")}
+                            </p>
+                          </div>
+
                           <p className="text-lg">{truncate(post.content)}</p>
                         </Link>
                       </div>
@@ -55,14 +64,20 @@ export default async function Drafts() {
                     .map((post) => (
                       <div key={post.id} className="flex flex-col">
                         <Link href={`/post/edit/${post.id}/`}>
-                          <p className="font-bold text-xl">{post.title}</p>
-                          <p className="text-lg">{truncate(post.content)}</p>
+                          <div className="flex flex-row justify-between items-center">
+                            <p className="font-bold text-xl">{post.title}</p>
+                            <p className="text-sm text-slate-400">
+                              Created at{" "}
+                              {dayjs(post.createdAt).format("YYYY-MM-DD")}
+                            </p>
+                          </div>
                         </Link>
                       </div>
                     ))}
                 </TabsContent>
               </Tabs>
             </div>
+            <div className="col-span-2"></div>
           </div>
         </div>
       )}

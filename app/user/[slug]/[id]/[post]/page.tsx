@@ -43,6 +43,7 @@ interface Comment {
   user: User;
   post: Post;
 }
+
 export default function ViewPost({
   params,
 }: {
@@ -132,7 +133,7 @@ export default function ViewPost({
               </div>
             )}
             <p className="text-lg">{post.content}</p>
-            <div className="mt-24 divide-y">
+            <div className="mt-24 divide-y w-4/6">
               {post.comments.map((comment) => (
                 <div key={comment.id} className="p-4">
                   <div className="h-full w-full items-center grid grid-cols-12">
@@ -159,13 +160,13 @@ export default function ViewPost({
               ))}
               <Textarea
                 placeholder="New Comment...."
-                className="mt-24"
+                className="mt-24 w-full"
                 value={comment}
                 onChange={(e) => setComment(e.target.value)}
               />
               <button
                 onClick={() => makeComment()}
-                className="bg-emerald-400/75 rounded-lg p-4 text-slate-100 hover:bg-emerald-400"
+                className="bg-emerald-400/75 rounded-lg p-4 text-slate-100 hover:bg-emerald-400 w-full"
               >
                 Comment
               </button>

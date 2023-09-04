@@ -1,5 +1,8 @@
 "use client";
 
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface User {
@@ -11,6 +14,7 @@ interface User {
 
 export default function Settings() {
   const [user, setUser] = useState<User>(null!);
+  const router = useRouter();
 
   useEffect(() => {
     fetch("/api/user/")
@@ -27,7 +31,7 @@ export default function Settings() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify(user),
-    });
+    }).then(() => router.push(`/user/${user.username}`));
   };
 
   return (
@@ -35,18 +39,18 @@ export default function Settings() {
       {user && (
         <div className="flex flex-col p-4 items-center justify-start content-start bg-slate-100 min-h-screen w-full text-black">
           <p className="text-2xl">Update Settings</p>
-          <input
+          <label htmlFor="username">Username</label>
+          <Input
             name="username"
             id="username"
-            className="border-transparent focus:border-transparent focus:outline-none text-4xl w-4/6 bg-slate-100"
             size={50}
             type="text"
             placeholder="Username"
             value={user.username}
             onChange={(e) => setUser({ ...user, username: e.target.value })}
           />{" "}
-          <textarea
-            className="resize-none border-transparent mt-4 focus:border-transparent focus:outline-none text-4xl w-4/6 bg-slate-100"
+          <label htmlFor="description">Description</label>
+          <Textarea
             rows={10}
             value={user.description}
             placeholder="Description"
@@ -54,7 +58,7 @@ export default function Settings() {
           />
           <button
             onClick={() => submit()}
-            className="bg-emerald-400/75 rounded-lg p-4 text-slate-100 hover:bg-emerald-400 mr-4"
+            className="bg-emerald-400/75 rounded-lg p-4 text-slate-100 hover:bg-emerald-400 m-4"
           >
             Save
           </button>
