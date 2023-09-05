@@ -1,8 +1,11 @@
 name: Deploy
 
 on:
-  push:
-    branches: [main, master]
+  workflow_run:
+    workflows: ["Playwright Tests"]
+    branches: [main]
+    types:
+      - completed
 
 jobs:
   deploy:
