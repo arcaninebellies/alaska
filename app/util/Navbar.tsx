@@ -52,7 +52,7 @@ export default function Navbar() {
             <Link href={`/user/${user.username}`}>
               <div className="flex flex-row justify-center items-center">
                 <Image
-                  src={`/avatars/${user.avatar}`}
+                  src={`https://cdn.notblizzard.dev/alaska/avatars/${user.avatar}.png`}
                   alt={user.username}
                   height={30}
                   width={30}
