@@ -26,7 +26,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div className=" flex flex-row bg-slate-100 shadow text-black p-4 justify-end w-full sticky top-0">
+      <div className=" flex flex-row bg-slate-100 shadow text-black p-4 justify-end w-full fixed top-0">
         {user ? (
           <>
             <div onClick={() => signOut()}>
