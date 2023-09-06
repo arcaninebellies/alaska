@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
+import sanitizeHtml from "sanitize-html";
 
 async function getData() {
   const res = await fetch(`${process.env.NEXT_URL}/api/article/`, {
@@ -16,6 +17,7 @@ export default async function Articles() {
   const data = await getData();
   const user = data.user;
   dayjs.extend(customParseFormat);
+
   const truncate = (str: string): string => {
     return str.length > 100 ? str.slice(0, 97) + "..." : str;
   };
@@ -52,8 +54,12 @@ export default async function Articles() {
                               {dayjs(post.createdAt).format("YYYY-MM-DD")}
                             </p>
                           </div>
-
-                          <p className="text-lg">{truncate(post.content)}</p>
+                          <div
+                            className="text-lg"
+                            dangerouslySetInnerHTML={{
+                              __html: sanitizeHtml(truncate(post.content)),
+                            }}
+                          ></div>{" "}
                         </Link>
                       </div>
                     ))}
@@ -71,6 +77,12 @@ export default async function Articles() {
                               {dayjs(post.createdAt).format("YYYY-MM-DD")}
                             </p>
                           </div>
+                          <div
+                            className="text-lg"
+                            dangerouslySetInnerHTML={{
+                              __html: sanitizeHtml(truncate(post.content)),
+                            }}
+                          ></div>{" "}
                         </Link>
                       </div>
                     ))}

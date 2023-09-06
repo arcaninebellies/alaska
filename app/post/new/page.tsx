@@ -3,10 +3,35 @@
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  useEditor,
+  EditorContent,
+  FloatingMenu,
+  BubbleMenu,
+  EditorProvider,
+} from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import Blockquote from "@tiptap/extension-blockquote";
+import Placeholder from "@tiptap/extension-placeholder";
+import Underline from "@tiptap/extension-underline";
+import Code from "@tiptap/extension-code";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import lowlight from "lowlight";
+import TipTap from "@/app/util/TipTap";
 
 export default function NewPost() {
   const { data: session } = useSession();
   const router = useRouter();
+
   const [data, setData] = useState({
     title: "",
     content: "",
@@ -22,7 +47,6 @@ export default function NewPost() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         router.push(`/user/${data.post.user.username}`);
       });
   };
@@ -30,7 +54,7 @@ export default function NewPost() {
   return (
     <>
       {session && (
-        <div className="flex flex-col p-4 items-center content-start bg-slate-100 min-h-screen w-full text-black">
+        <div className="flex flex-col items-center content-start bg-slate-100 min-h-screen w-full text-black p-24">
           <div className="flex flex-row">
             <button
               onClick={() => submit(false)}
@@ -47,20 +71,14 @@ export default function NewPost() {
           </div>
 
           <input
-            className="border-transparent focus:border-transparent focus:outline-none text-4xl w-4/6 bg-slate-100"
+            className="border-transparent focus:border-transparent focus:outline-none text-4xl w-full bg-slate-100"
             size={50}
             type="text"
             value={data.title}
             placeholder="Title...."
             onChange={(e) => setData({ ...data, title: e.target.value })}
           />
-          <textarea
-            className="resize-none border-transparent mt-4 focus:border-transparent focus:outline-none text-4xl w-4/6 bg-slate-100"
-            rows={10}
-            value={data.content}
-            placeholder="Your amazing story...."
-            onChange={(e) => setData({ ...data, content: e.target.value })}
-          />
+          <TipTap data={data} setData={setData} />
         </div>
       )}
     </>

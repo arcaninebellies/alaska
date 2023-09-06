@@ -1,8 +1,31 @@
 "use client";
 
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import {
+  useEditor,
+  EditorContent,
+  FloatingMenu,
+  BubbleMenu,
+  EditorProvider,
+} from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+  navigationMenuTriggerStyle,
+} from "@/components/ui/navigation-menu";
+import Blockquote from "@tiptap/extension-blockquote";
+import Underline from "@tiptap/extension-underline";
+import Code from "@tiptap/extension-code";
+import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
+import lowlight from "lowlight";
+import TipTap from "@/app/util/TipTap";
 
 export default function EditPost({ params }: { params: { id: string } }) {
   const { data: session } = useSession();
@@ -12,6 +35,27 @@ export default function EditPost({ params }: { params: { id: string } }) {
     content: "",
     draft: false,
     id: "",
+  });
+
+  const editor = useEditor({
+    extensions: [
+      StarterKit,
+      Blockquote,
+      Underline,
+      Code,
+      CodeBlockLowlight.configure({
+        lowlight,
+      }),
+    ],
+    content: data.content,
+    onUpdate: ({ editor }) => {
+      setData({ ...data, content: editor.getHTML() });
+    },
+    editorProps: {
+      attributes: {
+        class: "h-screen w-full bg-slate-100 text-4xl focus:outline-none",
+      },
+    },
   });
 
   useEffect(() => {
@@ -63,13 +107,7 @@ export default function EditPost({ params }: { params: { id: string } }) {
             placeholder="Title...."
             onChange={(e) => setData({ ...data, title: e.target.value })}
           />
-          <textarea
-            className="resize-none border-transparent mt-4 focus:border-transparent focus:outline-none text-4xl w-4/6 bg-slate-100"
-            rows={10}
-            value={data.content}
-            placeholder="Your amazing story...."
-            onChange={(e) => setData({ ...data, content: e.target.value })}
-          />
+          <TipTap data={data} setData={setData} />
         </div>
       )}
     </>

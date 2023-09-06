@@ -5,15 +5,8 @@ import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import relativeTime from "dayjs/plugin/relativeTime";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { headers } from "next/headers";
+import sanitizeHtml from "sanitize-html";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -99,7 +92,7 @@ export default function ViewPost({
     <>
       {post && (
         <>
-          <div className="flex flex-col p-4 items-center justify-start content-start bg-slate-100 min-h-screen w-full text-black">
+          <div className="flex flex-col p-24 justify-start content-start bg-slate-100 min-h-screen w-full text-black">
             <p className="text-4xl font-bold">{post.title}</p>
             {session && session.user.email === post.user.email && (
               <div className="flex flex-row">
@@ -132,8 +125,11 @@ export default function ViewPost({
                 </Dialog>
               </div>
             )}
-            <p className="text-lg">{post.content}</p>
-            <div className="mt-24 divide-y w-4/6">
+            <div
+              className="text-lg"
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
+            ></div>
+            <div className="mt-24 divide-y w-full">
               {post.comments.map((comment) => (
                 <div key={comment.id} className="p-4">
                   <div className="h-full w-full items-center grid grid-cols-12">
