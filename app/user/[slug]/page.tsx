@@ -60,7 +60,7 @@ export default async function ViewUser({
             <div className="col-span-3 flex flex-col w-full justify-around items-center">
               <div>
                 <Image
-                  src={`/avatars/${user.avatar}`}
+                  src={`https://cdn.notblizzard.dev/alaska/avatars/${user.avatar}.png`}
                   alt={user.username}
                   height={100}
                   width={100}
