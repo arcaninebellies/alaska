@@ -6,7 +6,7 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import sanitizeHtml from "sanitize-html";
 
 async function getData() {
-  const res = await fetch(`${process.env.NEXT_URL}/api/article/`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/article/`, {
     method: "GET",
     headers: headers(),
   });

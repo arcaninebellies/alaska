@@ -42,7 +42,7 @@ export default async function ViewUser({
           <div className="grid grid-cols-12 gap-4">
             <div className="col-span-2"></div>
             <div className="col-span-5 flex flex-col content-start justify-start  divide-y min-h-screen">
-              <p className="font-bold text-4xl">Stories</p>
+              <p className="font-bold text-4xl mt-24">Stories</p>
               {user.posts.map((post) => (
                 <div key={post.id} className="flex flex-col">
                   <Link href={`/user/${user.username}/${post.id}/${post.slug}`}>
