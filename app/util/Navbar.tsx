@@ -6,6 +6,8 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Cog8ToothIcon } from "@heroicons/react/24/outline";
 import { PencilSquareIcon } from "@heroicons/react/24/outline";
+import { Input } from "@/components/ui/input";
+import { useRouter } from "next/navigation";
 
 interface User {
   id: number;
@@ -16,6 +18,15 @@ interface User {
 export default function Navbar() {
   const { data: session } = useSession();
   const [user, setUser] = useState<User>(null!);
+  const [search, setSearch] = useState("");
+  const router = useRouter();
+
+  const handleSearch = (e) => {
+    if (e.keyCode === 13 && search !== "") {
+      return router.push(`/search?params=${search}`);
+    }
+  };
+
   useEffect(() => {
     if (session) {
       fetch("/api/user")
@@ -26,40 +37,49 @@ export default function Navbar() {
 
   return (
     <>
-      <div className=" flex flex-row bg-slate-100 shadow text-black p-4 justify-end w-full fixed top-0">
+      <div className="flex flex-row bg-slate-100 shadow text-black p-4 justify-end w-full sticky top-0">
         {user ? (
           <>
-            <div onClick={() => signOut()}>
-              <div className="flex flex-row justify-center items-center content-center mr-4">
-                <p className="text-lg">Sign Out</p>
+            <Input
+              className="w-2/6 mr-32"
+              placeholder="Search"
+              onKeyDown={handleSearch}
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+            <div className="flex flex-row">
+              <div onClick={() => signOut()}>
+                <div className="flex flex-row justify-center items-center content-center mr-4 cursor-pointer">
+                  <p className="text-lg">Sign Out</p>
+                </div>
               </div>
+              <Link href="/user/settings">
+                <div className="flex flex-row justify-center items-center content-center mr-4 cursor-pointer">
+                  <p className="text-lg">Settings</p>
+                </div>
+              </Link>
+              <Link href="/post/new">
+                <div className="flex flex-row justify-center items-center content-center mr-4">
+                  <p className="text-lg">Write</p>
+                </div>
+              </Link>
+              <Link href="/user/articles">
+                <div className="flex flex-row justify-center items-center content-center mr-4">
+                  <p className="text-lg">Articles</p>
+                </div>
+              </Link>
+              <Link href={`/user/${user.username}`}>
+                <div className="flex flex-row justify-center items-center">
+                  <Image
+                    src={`https://cdn.notblizzard.dev/alaska/avatars/${user.avatar}.png`}
+                    alt={user.username}
+                    height={30}
+                    width={30}
+                    className="rounded-full"
+                  />
+                </div>
+              </Link>
             </div>
-            <Link href="/user/settings">
-              <div className="flex flex-row justify-center items-center content-center mr-4">
-                <p className="text-lg">Settings</p>
-              </div>
-            </Link>
-            <Link href="/post/new">
-              <div className="flex flex-row justify-center items-center content-center mr-4">
-                <p className="text-lg">Write</p>
-              </div>
-            </Link>
-            <Link href="/user/articles">
-              <div className="flex flex-row justify-center items-center content-center mr-4">
-                <p className="text-lg">Articles</p>
-              </div>
-            </Link>
-            <Link href={`/user/${user.username}`}>
-              <div className="flex flex-row justify-center items-center">
-                <Image
-                  src={`https://cdn.notblizzard.dev/alaska/avatars/${user.avatar}.png`}
-                  alt={user.username}
-                  height={30}
-                  width={30}
-                  className="rounded-full"
-                />
-              </div>
-            </Link>
           </>
         ) : (
           <>

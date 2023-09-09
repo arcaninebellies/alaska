@@ -1,21 +1,21 @@
 import Image from "next/image";
 import Link from "next/link";
 import sanitizeHtml from "sanitize-html";
-interface User {
+type User = {
   id: number;
   username: string;
   avatar: string;
   description: string;
   posts: Post[];
-}
+};
 
-interface Post {
+type Post = {
   id: number;
   user: User;
   title: string;
   content: string;
   slug: string;
-}
+};
 
 async function getData(slug: string) {
   const res = await fetch(
