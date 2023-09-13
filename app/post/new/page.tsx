@@ -28,11 +28,18 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import lowlight from "lowlight";
 import TipTap from "@/app/util/TipTap";
 
+type Post = {
+  title: string;
+  content: string;
+  draft: boolean;
+  id: string;
+};
+
 export default function NewPost() {
   const { data: session } = useSession();
   const router = useRouter();
 
-  const [data, setData] = useState({
+  const [data, setData] = useState<Partial<Post>>({
     title: "",
     content: "",
   });

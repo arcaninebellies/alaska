@@ -5,6 +5,24 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import sanitizeHtml from "sanitize-html";
 
+type User = {
+  id: number;
+  username: string;
+  avatar: string;
+  description: string;
+  posts: Post[];
+};
+
+type Post = {
+  id: number;
+  user: User;
+  title: string;
+  content: string;
+  slug: string;
+  createdAt: string;
+  draft: boolean;
+};
+
 async function getData() {
   const res = await fetch(`${process.env.NEXT_PUBLIC_URL}/api/article/`, {
     method: "GET",
@@ -41,8 +59,8 @@ export default async function Articles() {
                 </TabsList>
                 <TabsContent value="stories">
                   {user.posts
-                    .filter((post) => post.draft === false)
-                    .map((post) => (
+                    .filter((post: Post) => post.draft === false)
+                    .map((post: Post) => (
                       <div key={post.id} className="flex flex-col">
                         <Link
                           href={`/user/${user.username}/${post.id}/${post.slug}`}
@@ -66,8 +84,8 @@ export default async function Articles() {
                 </TabsContent>
                 <TabsContent value="drafts">
                   {user.posts
-                    .filter((post) => post.draft === true)
-                    .map((post) => (
+                    .filter((post: Post) => post.draft === true)
+                    .map((post: Post) => (
                       <div key={post.id} className="flex flex-col">
                         <Link href={`/post/edit/${post.id}/`}>
                           <div className="flex flex-row justify-between items-center">

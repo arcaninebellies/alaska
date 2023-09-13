@@ -4,17 +4,29 @@ import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import slugify from "slugify";
 import prisma from "@/prisma";
+import { z } from "zod";
 
 export async function POST(request: Request, response: Response) {
   const session = await getServerSession(OPTIONS);
 
   if (session?.user?.email) {
+    const schema = z.object({
+      content: z.string(),
+      id: z.string(),
+    });
+
+    const response = schema.safeParse(request.body);
+    if (!response.success) {
+      return NextResponse.json({ error: response.error });
+    }
+
+    const { id, content } = response.data;
+
     const email = session.user.email;
-    const data = await request.json();
 
     const post = await prisma.post.findFirst({
       where: {
-        id: data.id,
+        id: parseInt(id),
       },
     });
 
@@ -24,25 +36,27 @@ export async function POST(request: Request, response: Response) {
       },
     });
 
-    const comment = await prisma.comment.create({
-      data: {
-        content: data.content,
-        post: {
-          connect: {
-            id: post.id,
+    if (post && user) {
+      const comment = await prisma.comment.create({
+        data: {
+          content: content,
+          post: {
+            connect: {
+              id: post.id,
+            },
+          },
+          user: {
+            connect: {
+              id: user.id,
+            },
           },
         },
-        user: {
-          connect: {
-            id: user.id,
-          },
+        include: {
+          user: true,
         },
-      },
-      include: {
-        user: true,
-      },
-    });
+      });
 
-    return NextResponse.json({ comment });
+      return NextResponse.json({ comment });
+    }
   }
 }

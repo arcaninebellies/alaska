@@ -21,7 +21,7 @@ export default function Navbar() {
   const [search, setSearch] = useState("");
   const router = useRouter();
 
-  const handleSearch = (e) => {
+  const handleSearch = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.keyCode === 13 && search !== "") {
       return router.push(`/search?params=${search}`);
     }

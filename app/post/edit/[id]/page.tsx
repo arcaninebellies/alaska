@@ -27,10 +27,16 @@ import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import lowlight from "lowlight";
 import TipTap from "@/app/util/TipTap";
 
+type Post = {
+  title: string;
+  content: string;
+  draft: boolean;
+  id: string;
+};
 export default function EditPost({ params }: { params: { id: string } }) {
   const { data: session } = useSession();
   const router = useRouter();
-  const [data, setData] = useState({
+  const [data, setData] = useState<Post>({
     title: "",
     content: "",
     draft: false,

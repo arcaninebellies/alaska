@@ -27,7 +27,20 @@ import Code from "@tiptap/extension-code";
 import CodeBlockLowlight from "@tiptap/extension-code-block-lowlight";
 import lowlight from "lowlight";
 
-export default function TipTap({ data, setData }) {
+type Post = {
+  title: string;
+  content: string;
+  draft: boolean;
+  id: string;
+};
+
+export default function TipTap({
+  data,
+  setData,
+}: {
+  data: Partial<Post>;
+  setData: Function;
+}) {
   const editor = useEditor({
     extensions: [
       StarterKit,

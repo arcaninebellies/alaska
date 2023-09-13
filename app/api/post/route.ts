@@ -4,6 +4,7 @@ import { PrismaClient } from "@prisma/client";
 import { NextResponse } from "next/server";
 import slugify from "slugify";
 import prisma from "@/prisma";
+import { z } from "zod";
 
 export async function GET(request: Request, response: Response) {
   const { searchParams } = new URL(request.url);
@@ -37,10 +38,21 @@ export async function GET(request: Request, response: Response) {
 }
 export async function POST(request: Request, response: Response) {
   const session = await getServerSession(OPTIONS);
-
   if (session?.user?.email) {
     const email = session.user.email;
-    const data = await request.json();
+
+    const schema = z.object({
+      title: z.string(),
+      content: z.string(),
+      draft: z.boolean(),
+    });
+
+    const response = schema.safeParse(request.body);
+    if (!response.success) {
+      return NextResponse.json({ error: response.error });
+    }
+
+    const { title, content, draft } = response.data;
 
     const user = await prisma.user.findFirst({
       where: { email },
@@ -50,7 +62,6 @@ export async function POST(request: Request, response: Response) {
     });
 
     if (user) {
-      console.log(data);
       const post = await prisma.post.create({
         data: {
           user: {
@@ -58,10 +69,10 @@ export async function POST(request: Request, response: Response) {
               id: user.id,
             },
           },
-          title: data.title,
-          content: data.content,
-          draft: data.draft,
-          slug: slugify(data.title),
+          title,
+          content,
+          draft,
+          slug: slugify(title),
         },
         include: {
           user: true,

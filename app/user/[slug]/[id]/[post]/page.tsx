@@ -94,37 +94,38 @@ export default function ViewPost({
         <>
           <div className="flex flex-col p-24 justify-start content-start bg-slate-100 min-h-screen w-full text-black">
             <p className="text-4xl font-bold">{post.title}</p>
-            {session && session.user.email === post.user.email && (
-              <div className="flex flex-row">
-                <Link href={`/post/edit/${post.id}/`}>
-                  <button className="bg-emerald-400/75 rounded-lg px-4 text-slate-100 hover:bg-emerald-400 mr-1">
-                    Edit
-                  </button>
-                </Link>
-                <Dialog open={open} onOpenChange={() => setOpen(!open)}>
-                  <DialogTrigger asChild>
-                    <button className="bg-rose-400/75 rounded-lg px-4 text-slate-100 hover:bg-rose-400 ml-1">
-                      Delete
+            {session?.user?.email &&
+              session?.user?.email === post.user.email && (
+                <div className="flex flex-row">
+                  <Link href={`/post/edit/${post.id}/`}>
+                    <button className="bg-emerald-400/75 rounded-lg px-4 text-slate-100 hover:bg-emerald-400 mr-1">
+                      Edit
                     </button>
-                  </DialogTrigger>
-                  <DialogContent className="border-2 border-rose-400">
-                    Are you sure you want to delete this?
-                    <button
-                      onClick={() => deletePost()}
-                      className="bg-rose-400/75 rounded-lg px-4 text-slate-100 hover:bg-rose-400 ml-1"
-                    >
-                      Yes
-                    </button>
-                    <button
-                      onClick={() => setOpen(false)}
-                      className="bg-emerald-400/75 rounded-lg px-4 text-slate-100 hover:bg-emerald-400 ml-1"
-                    >
-                      No
-                    </button>
-                  </DialogContent>
-                </Dialog>
-              </div>
-            )}
+                  </Link>
+                  <Dialog open={open} onOpenChange={() => setOpen(!open)}>
+                    <DialogTrigger asChild>
+                      <button className="bg-rose-400/75 rounded-lg px-4 text-slate-100 hover:bg-rose-400 ml-1">
+                        Delete
+                      </button>
+                    </DialogTrigger>
+                    <DialogContent className="border-2 border-rose-400">
+                      Are you sure you want to delete this?
+                      <button
+                        onClick={() => deletePost()}
+                        className="bg-rose-400/75 rounded-lg px-4 text-slate-100 hover:bg-rose-400 ml-1"
+                      >
+                        Yes
+                      </button>
+                      <button
+                        onClick={() => setOpen(false)}
+                        className="bg-emerald-400/75 rounded-lg px-4 text-slate-100 hover:bg-emerald-400 ml-1"
+                      >
+                        No
+                      </button>
+                    </DialogContent>
+                  </Dialog>
+                </div>
+              )}
             <div
               className="text-lg"
               dangerouslySetInnerHTML={{ __html: sanitizeHtml(post.content) }}
