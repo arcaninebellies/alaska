@@ -39,7 +39,7 @@ export async function POST(request: Request, response: Response) {
       avatar: zfd.text().optional(),
     });
 
-    const response = schema.safeParse(data);
+    const response = schema.safeParse(await request.formData());
     if (!response.success) {
       return NextResponse.json({ error: response.error });
     }
