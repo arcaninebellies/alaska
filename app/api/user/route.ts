@@ -31,7 +31,6 @@ export async function POST(request: Request, response: Response) {
 
   if (session?.user?.email) {
     const email = session.user.email;
-    const data = await request.formData();
 
     const schema = zfd.formData({
       username: zfd.text(),
