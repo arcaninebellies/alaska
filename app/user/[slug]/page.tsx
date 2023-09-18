@@ -40,8 +40,22 @@ export default async function ViewUser({
       {user && (
         <div className="flex flex-col p-4 bg-slate-100 w-full min-h-screen text-black">
           <div className="grid grid-cols-12 gap-4">
-            <div className="col-span-2"></div>
-            <div className="col-span-5 flex flex-col content-start justify-start  divide-y min-h-screen">
+            <div className="col-span-12 flex md:hidden md:col-span-3  flex-col w-full justify-around items-center">
+              <div>
+                <Image
+                  src={`https://cdn.notblizzard.dev/alaska/avatars/${user.avatar}.png`}
+                  alt={user.username}
+                  height={100}
+                  width={100}
+                  className="rounded-full"
+                />
+                <p className="font-bold text-xl">{user.username}</p>
+                <p className="text-lg break-all">{user.description}</p>
+              </div>
+              <div className="col-span-2"></div>
+            </div>
+            <div className="md:col-span-2"></div>
+            <div className="col-span-12 md:col-span-5 flex flex-col content-start justify-start  divide-y min-h-screen">
               <p className="font-bold text-4xl mt-24">Stories</p>
               {user.posts.map((post: Post) => (
                 <div key={post.id} className="flex flex-col">
@@ -57,7 +71,7 @@ export default async function ViewUser({
                 </div>
               ))}
             </div>
-            <div className="col-span-3 flex flex-col w-full justify-around items-center">
+            <div className="col-span-12 hidden md:col-span-3 md:flex flex-col w-full justify-around items-center">
               <div>
                 <Image
                   src={`https://cdn.notblizzard.dev/alaska/avatars/${user.avatar}.png`}
