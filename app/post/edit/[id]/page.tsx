@@ -81,7 +81,6 @@ export default function EditPost({ params }: { params: { id: string } }) {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         router.push(`/user/${data.post.user.username}`);
       });
   };

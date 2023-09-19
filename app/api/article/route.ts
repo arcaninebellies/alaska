@@ -6,7 +6,6 @@ import prisma from "@/prisma";
 
 export async function GET(request: Request, response: Response) {
   const session = await getServerSession(OPTIONS);
-  console.log(session);
   if (session?.user?.email) {
     const email = session.user.email;
     const user = await prisma.user.findFirst({

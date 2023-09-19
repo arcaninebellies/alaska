@@ -19,7 +19,6 @@ export const OPTIONS = {
       const user_ = await prisma.user.findFirst({
         where: { email: profile.email },
       });
-      console.log(profile);
 
       if (!user_) {
         // download avatar
