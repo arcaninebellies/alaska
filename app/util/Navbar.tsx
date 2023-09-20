@@ -37,16 +37,16 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="flex z-10 flex-row bg-slate-100 shadow text-black p-4 justify-end w-full absolute top-0">
-        {user ? (
-          <>
-            <Input
-              className="w-2/6 mr-32"
-              placeholder="Search"
-              onKeyDown={handleSearch}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-            />
+      <div className="backdrop-filter backdrop-blur bg-opacity-25 flex z-10 flex-row bg-slate-100 shadow text-black p-4 justify-end w-full absolute top-0">
+        <>
+          <Input
+            className="w-2/6 mr-32"
+            placeholder="Search"
+            onKeyDown={handleSearch}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+          />
+          {user && (
             <div className="flex flex-row">
               <div onClick={() => signOut()}>
                 <div className="flex flex-row justify-center items-center content-center mr-4 cursor-pointer">
@@ -80,16 +80,8 @@ export default function Navbar() {
                 </div>
               </Link>
             </div>
-          </>
-        ) : (
-          <>
-            <div onClick={() => signIn()}>
-              <div className="flex flex-row justify-center items-center content-center mr-4">
-                <p className="text-lg">Sign In</p>
-              </div>
-            </div>
-          </>
-        )}
+          )}
+        </>
       </div>
     </>
   );
