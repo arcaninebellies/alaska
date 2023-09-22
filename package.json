@@ -3,11 +3,10 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev -p 5040",
+    "dev": "next dev -p 3001",
     "build": "next build",
-    "start": "next start -p 5040",
-    "lint": "next lint",
-    "postinstall": "prisma generate && prisma migrate deploy"
+    "start": "next start -p 3001",
+    "lint": "next lint"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.405.0",
